@@ -340,3 +340,57 @@ function opinar($conexion, $opinion){
         }
     }
 }
+
+
+
+
+
+function obtenerUsuarioAct($conexion){
+    // 1. Comprobar id
+    if(!isset($_GET['idusuarioactividad'])){
+        return false; // vamos al form
+    } 
+
+    // 2. Consultar la bd con id
+    $id = $_GET['idusuarioactividad'];
+    $consulta = "SELECT * FROM usuario_actividad WHERE idUsuarioActividad = :id";
+    $stm = $conexion->prepare($consulta);
+    $stm->bindParam(':id', $id, PDO::PARAM_STR);
+    $stm->execute();
+    $resultado = $stm->fetch(PDO::FETCH_ASSOC);
+
+    // 3. Retornar valores necesarios
+    return $resultado;
+}
+
+
+
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['cambiarfecha'])) {
+    $idUsuarioActividad=$_POST['idUsuarioActividad'];//Guardar lo que ha escrito el usuario
+    $fecha=$_POST['fecha'];
+    actualizarFecha($conexion,$fecha,$idUsuarioActividad);
+}
+
+function actualizarFecha($conexion,$fecha,$idUsuarioActividad){
+    try{
+        // Comprobar datos que no esten vacios
+    
+        if(empty($fecha)||empty($idUsuarioActividad)){
+            header('Location: portal.php?error=bd');
+        }
+    
+        // Actualizar fecha por id de Usuario Actividad
+        $consulta = "UPDATE usuario_actividad SET fecha = :fecha WHERE idUsuarioActividad = :idUsuarioActividad;";
+        $stm = $conexion->prepare($consulta);
+        $stm->bindParam(':idUsuarioActividad', $idUsuarioActividad, PDO::PARAM_STR);
+        $stm->bindParam(':fecha', $fecha, PDO::PARAM_STR);
+    
+        if(!$stm->execute()) header('Location: errordefechaxd.php');
+    
+        header('Location: portal.php?fecha=true');
+    }catch(PDOException $e){ 
+        //Si hay algún error al enviar la consulta, se muestra un mensaje.
+        header('Location: portal.php?error=bd');
+    }
+}

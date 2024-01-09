@@ -35,6 +35,10 @@ if (isset($_GET['baja']) && $_GET['baja'] === 'true') {//El usuario se ha dado d
 if (isset($_GET['registro']) && $_GET['registro'] === 'true') {//El usuario se ha apuntado a una actividad
     echo "<p>¡Te has apuntado a la actividad correctamente!</p>";
 }
+
+if (isset($_GET['fecha']) && $_GET['fecha'] === 'true') {//El usuario se ha apuntado a una actividad
+    echo "<p>Fecha modificada correctamente!</p>";
+}
 ?>
 
 <style>
@@ -94,7 +98,8 @@ if (isset($_GET['registro']) && $_GET['registro'] === 'true') {//El usuario se h
             <td> 
             <form class="acciones" action="" method="POST">
             <button type="submit" name="baja">Darme de baja</button> 
-            <button type="submit" name="actualizarFecha">Actualizar Fecha</button>
+            <a href="actualizar_fecha.php?idusuarioactividad='.$miactividad['idUsuarioActividad'].'">Actualizar Fecha</a>
+
             <input type="hidden" name="idUsuarioActividad" value="' . $miactividad['idUsuarioActividad'] . '">
             </form>
             </td>
@@ -111,3 +116,4 @@ if (isset($_GET['registro']) && $_GET['registro'] === 'true') {//El usuario se h
     <button type="submit" name="actualizarFecha">Actualizar Fecha</button>
     <input type="hidden" name="idUsuarioActividad" value="">
 </form> -->
+
